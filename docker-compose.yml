@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  covid19-remote-work-hotsite:
+    image: bb.com.br/covid19-remote-work/hotsite
+    restart: always
+    network_mode: bridge
+    build: 
+      context: .
+      args: 
+        - NODE_ENV=production
+        - REACT_APP_BACKEND_API_URL=BUILD_BACKEND_API_URL
+        - REACT_APP_BACKEND_LOGIN_URL=BUILD_BACKEND_LOGIN_URL
+    environment:
+      - API_URL=http://localhost:3001
+      - LOGIN_URL=http://localhost:3001
+    ports:
+      - 8009:2015
