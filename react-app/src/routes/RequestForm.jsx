@@ -53,8 +53,8 @@ function RequestForm() {
                     </div>
 
                     <div className="form-label-group">
-                        <label htmlFor="inputSenha">Senha de portais externos </label>
                         <input defaultValue={password} data-toggle="tooltip" data-placement="top" title="Não é a senha SISBB" onChange={e => setPassword(e.target.value)} type="password" id="inputSenha" className="form-control" placeholder="Senha" required />
+                        <label htmlFor="inputSenha">Senha de portais externos </label>
                     </div>
 
                     <button className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">

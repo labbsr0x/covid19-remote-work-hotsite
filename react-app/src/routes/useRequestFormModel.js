@@ -12,22 +12,24 @@ export default () => {
     const requestKitURL = `${process.env.REACT_APP_BACKEND_API_URL}/kit`
 
     useEffect(_ => {
+        let storedKey = ""
         if (window.localStorage.getItem("user")) {
-            setRequestKitData(window.localStorage.getItem("user"))
-
+            const storedUser = JSON.parse(window.localStorage.getItem("user"))
+            storedKey = storedUser.key
         } else if (window.localStorage.getItem("user_key")) {
-            const getKitURL = `${process.env.REACT_APP_BACKEND_API_URL}/kit/${window.localStorage.getItem("user_key")}`
-            fetch(getKitURL).then(resp => {
-                if (resp.status === 200) {
-                    return resp.json()
+            storedKey = window.localStorage.getItem("user_key")
+        }
+        const getKitURL = `${process.env.REACT_APP_BACKEND_API_URL}/kit/${storedKey}`
+        fetch(getKitURL).then(resp => {
+            if (resp.status === 200) {
+                return resp.json()
+            }
+        })
+            .then(ret => {
+                if (ret) {
+                    setRequestKitData(ret)
                 }
             })
-                .then(ret => {
-                    if (ret) {
-                        setRequestKitData(ret)
-                    }
-                })
-        }
     }, [])
 
     const requestKit = () => {
@@ -64,16 +66,15 @@ export default () => {
                     setTimeout(_ => window.location.reload(), 8000)
 
                 } else if (resp.status === 201) {
-                    resp.json()
+                    return resp.json()
                 }
             })
             .then(jsonObj => {
                 if (jsonObj) {
                     setMessageType("success")
-                    setMessage("Seu pedido para geração do kit de trabalho remoto foi gerado com sucesso! Aguarde alguns instantes e recarregue essa página.")
+                    setMessage("Seu pedido para geração do kit de trabalho remoto foi gerado com sucesso! Aguarde alguns instantes e entre novamente nessa página para ver se o seu kit já está disponível para download.")
                     window.localStorage.setItem("user", JSON.stringify(jsonObj))
                     window.localStorage.setItem("user_key", jsonObj.key)
-                    setRequestKitData(jsonObj)
                     setTimeout(_ => window.location.reload(), 10000)
                 }
             })
