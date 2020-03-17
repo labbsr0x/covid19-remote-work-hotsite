@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useRequestFormModel from './useRequestFormModel'
 
 function RequestForm() {
@@ -10,6 +10,12 @@ function RequestForm() {
         password, setPassword,
         requestKit
     } = useRequestFormModel()
+
+    useEffect(() => {
+        window.jQuery(function () {
+            window.jQuery('[data-toggle="tooltip"]').tooltip()
+        })
+    }, [])
 
     return <>
         {requestKitData &&
@@ -42,13 +48,13 @@ function RequestForm() {
                 }
                 <form onSubmit={e => { e.preventDefault(); requestKit() }}>
                     <div className="form-label-group">
-                        <input defaultValue={key} maxLength={8} onChange={e => setKey(e.target.value)} type="chave" id="inputChave" className="form-control" placeholder="Chave Funcional (FXXXXXXX)" required autoFocus />
-                        <label htmlFor="inputChave">Chave Funcional (FXXXXXXX)</label>
+                        <input defaultValue={key} maxLength={8} data-toggle="tooltip" data-placement="top" title="No formato FXXXXXXX" onChange={e => setKey(e.target.value)} type="chave" id="inputChave" className="form-control" placeholder="Chave Funcional (FXXXXXXX)" required autoFocus />
+                        <label htmlFor="inputChave">Chave Funcional</label>
                     </div>
 
                     <div className="form-label-group">
-                        <input defaultValue={password} onChange={e => setPassword(e.target.value)} type="password" id="inputSenha" className="form-control" placeholder="Senha" required />
-                        <label htmlFor="inputSenha">Senha de portais externos (não é a senha SISBB)</label>
+                        <label htmlFor="inputSenha">Senha de portais externos </label>
+                        <input defaultValue={password} data-toggle="tooltip" data-placement="top" title="Não é a senha SISBB" onChange={e => setPassword(e.target.value)} type="password" id="inputSenha" className="form-control" placeholder="Senha" required />
                     </div>
 
                     <button className="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">
